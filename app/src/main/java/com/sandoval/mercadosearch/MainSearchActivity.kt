@@ -11,11 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.sandoval.mercadosearch.ui.search_products.screens.MercadoSearchNavigation
 import com.sandoval.mercadosearch.ui.theme.MercadoSearchTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainSearchActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
@@ -25,17 +26,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Text(text = "Hello Mercado Search!")
+                    MercadoSearchNavigation()
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MercadoSearchTheme {
-        Text(text = "Hello Mercado Search!")
     }
 }
