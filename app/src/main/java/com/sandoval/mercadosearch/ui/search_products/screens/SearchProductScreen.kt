@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
@@ -21,7 +20,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sandoval.mercadosearch.ui.compose.RectangleSearchTextField
 import com.sandoval.mercadosearch.ui.compose.RoundedSearchTextField
 import com.sandoval.mercadosearch.ui.theme.*
 
@@ -29,6 +27,7 @@ import com.sandoval.mercadosearch.ui.theme.*
 fun SearchProductScreen(
     searchTextValue: TextFieldValue
 ) {
+    val focusManager = LocalFocusManager.current
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -55,6 +54,27 @@ fun SearchProductScreen(
                 padding = PaddingValues(top = 32.dp),
                 searchTextValue = searchTextValue
             )
+            val isSearchEnabled = searchTextValue.text.isBlank().not()
+
+            IconButton(
+                modifier = Modifier
+                    .padding(top = 32.dp)
+                    .shadow(elevation = 8.dp, shape = CircleShape)
+                    .background(
+                        color = if (isSearchEnabled) MercadoSearchBlue else MercadoSearchBrightGray,
+                        shape = CircleShape
+                    ),
+                enabled = isSearchEnabled,
+                onClick = {
+                    focusManager.clearFocus(force = true)
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    tint = MercadoSearchBlue,
+                    contentDescription = "Search icon"
+                )
+            }
         }
     }
 }
