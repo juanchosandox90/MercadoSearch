@@ -17,10 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MercadoSearch">
         <activity
-            android:name=".MainActivity"
+            android:name=".MainSearchActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.MercadoSearch"
+            android:theme="@style/Theme.MercadoSearch.SplashScreen"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
