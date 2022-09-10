@@ -3,7 +3,7 @@ package com.sandoval.mercadosearch.di
 import android.content.Context
 import com.sandoval.mercadosearch.BuildConfig
 import com.sandoval.mercadosearch.data.DefaultProductsRepository
-import com.sandoval.mercadosearch.data.ProductsRepository
+import com.sandoval.mercadosearch.domain.repository.ProductsRepository
 import com.sandoval.mercadosearch.data.datasource.remote.DefaultProductsRemoteDataSource
 import com.sandoval.mercadosearch.data.datasource.remote.RemoteProductsDataSource
 import com.sandoval.mercadosearch.data.datasource.remote.api.ProductsApiService

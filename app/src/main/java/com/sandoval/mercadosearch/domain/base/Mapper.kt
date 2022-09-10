@@ -1,4 +1,4 @@
-package com.sandoval.mercadosearch.data.networking
+package com.sandoval.mercadosearch.domain.base
 
 interface Mapper<I, O> {
     fun map(input: I): O

@@ -1,4 +1,4 @@
-package com.sandoval.mercadosearch.data.networking
+package com.sandoval.mercadosearch.domain.base
 
 sealed class ErrorEntity {
     class RemoteResponseError(val code: Int, val message: String? = null) : ErrorEntity()

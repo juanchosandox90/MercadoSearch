@@ -1,5 +1,7 @@
 package com.sandoval.mercadosearch.data.networking
 
+import com.sandoval.mercadosearch.domain.base.ErrorEntity
+import com.sandoval.mercadosearch.domain.base.Result
 import java.net.SocketTimeoutException
 
 inline fun <T> networkRequest(

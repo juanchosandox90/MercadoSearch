@@ -2,28 +2,28 @@ package com.sandoval.mercadosearch.data.datasource.remote.mapper
 
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
-import com.sandoval.mercadosearch.data.datasource.remote.models.PaginatedDataEntity
+import com.sandoval.mercadosearch.domain.base.PaginatedDataEntity
 import com.sandoval.mercadosearch.data.datasource.remote.models.ProductDataModel
 import com.sandoval.mercadosearch.data.extensions.getAsJsonObjectOrNull
 import com.sandoval.mercadosearch.data.extensions.getOrNull
 import com.sandoval.mercadosearch.data.json.JsonResponseMapper
-import com.sandoval.mercadosearch.data.networking.ErrorEntity
-import com.sandoval.mercadosearch.data.networking.Result
+import com.sandoval.mercadosearch.domain.base.ErrorEntity
+import com.sandoval.mercadosearch.domain.base.Result
 import com.sandoval.mercadosearch.data.pagination.PaginationUtils
-
+import com.sandoval.mercadosearch.domain.models.DProductDataModel
 
 object JsonToPaginatedProductsData :
-    JsonResponseMapper<JsonObject, PaginatedDataEntity<ProductDataModel>>() {
+    JsonResponseMapper<JsonObject, PaginatedDataEntity<DProductDataModel>>() {
 
     override fun map(
         responseCode: Int,
         json: JsonObject
-    ): Result<PaginatedDataEntity<ProductDataModel>> {
+    ): Result<PaginatedDataEntity<DProductDataModel>> {
         val paging = json.getAsJsonObjectOrNull(PAGING_OBJECT_KEY)
         val total = paging?.getOrNull(TOTAL_OBJECT_KEY)?.asInt?.run {
 
             /**
-             * API requires an access token for more than 1000 results :eyes:
+             * API requiere un token de acceso para mas de 1000 resultados
              * */
 
             if (this > MAX_UNAUTHENTICATED_LIMIT) MAX_UNAUTHENTICATED_LIMIT else this
@@ -48,7 +48,7 @@ object JsonToPaginatedProductsData :
         }
     }
 
-    private fun mapJsonArray(jsonArray: JsonArray): List<ProductDataModel> {
+    private fun mapJsonArray(jsonArray: JsonArray): List<DProductDataModel> {
         return GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .create()
@@ -60,17 +60,19 @@ object JsonToPaginatedProductsData :
             }
     }
 
-    private fun mapModelToEntity(productModel: ProductDataModel): ProductDataModel =
-        ProductDataModel(
+    private fun mapModelToEntity(productModel: ProductDataModel): DProductDataModel =
+        DProductDataModel(
             id = productModel.id,
             title = productModel.title ?: "",
             price = productModel.price ?: 0.0,
+            condition = productModel.condition
+                ?: DProductDataModel.ProductConditionEntity.UNKNOWN,
             permalink = productModel.permalink ?: "",
             thumbnail = productModel.thumbnail ?: "",
-            shipping = productModel.shipping,
-            address = ProductDataModel.AddressModel(
-                cityName = productModel.address?.cityName ?: "",
-                stateName = productModel.address?.stateName ?: ""
+            freeShipping = productModel.shipping?.freeShipping ?: false,
+            address = DProductDataModel.ProductAddressEntity(
+                city = productModel.address?.cityName ?: "",
+                state = productModel.address?.stateName ?: ""
             )
         )
 

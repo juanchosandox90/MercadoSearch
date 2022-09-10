@@ -1,4 +1,4 @@
-package com.sandoval.mercadosearch.data.datasource.remote.models
+package com.sandoval.mercadosearch.domain.base
 
 data class PaginatedDataEntity<T>(
     val total: Int,

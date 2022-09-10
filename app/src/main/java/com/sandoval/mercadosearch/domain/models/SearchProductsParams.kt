@@ -1,4 +1,4 @@
-package com.sandoval.mercadosearch.data.datasource.remote.models
+package com.sandoval.mercadosearch.domain.models
 
 data class SearchProductsParams(
     val name: String, val offset: Int, val limit: Int
