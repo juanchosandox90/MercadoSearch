@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.IntOffset
+import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.systemuicontroller.SystemUiController
@@ -19,10 +20,13 @@ import com.sandoval.mercadosearch.ui.theme.MercadoSearchYellow
 import com.sandoval.mercadosearch.ui.compose.textFieldSaver
 import com.sandoval.mercadosearch.ui.search_products.screens.SearchProductScreen
 import com.sandoval.mercadosearch.ui.search_products.screens.SearchResultScreen
+import com.sandoval.mercadosearch.ui.search_products.screens.SearchResultsActions
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MercadoSearchNavigation() {
+fun MercadoSearchNavigation(
+    mercadoSearchNavigationActions: MercadoSearchNavigationActions
+) {
 
     val navigationController = rememberAnimatedNavController()
     val systemUiController = rememberSystemUiController()
@@ -53,14 +57,30 @@ fun MercadoSearchNavigation() {
                 slideInVertically(initialOffsetY = { 1000 }, animationSpec = springSpec)
             },
             popExitTransition = {
-                slideOutVertically(targetOffsetY = {2000}, animationSpec = springSpec)
+                slideOutVertically(targetOffsetY = { 2000 }, animationSpec = springSpec)
             }
-        ){
+        ) {
             SetStatusBarColor(systemUiController = systemUiController, color = Color.White)
-            SearchResultScreen()
+            SearchResultScreen(
+                searchTextValue = searchTextValue,
+                actions = searchResultActions(
+                    searchTextValue,
+                    mercadoSearchNavigationActions,
+                    navigationController
+                )
+            )
         }
     }
 }
+
+@Composable
+private fun searchResultActions(
+    searchTextValue: TextFieldValue,
+    mercadoSearchNavigation: MercadoSearchNavigationActions,
+    navigationController: NavHostController
+) = SearchResultsActions(
+    doWhenBackButtonClicked = mercadoSearchNavigation.doWhenBackButtonPressed
+)
 
 @Composable
 private fun SetStatusBarColor(systemUiController: SystemUiController, color: Color) {
@@ -68,6 +88,10 @@ private fun SetStatusBarColor(systemUiController: SystemUiController, color: Col
         systemUiController.setStatusBarColor(color)
     }
 }
+
+data class MercadoSearchNavigationActions(
+    val doWhenBackButtonPressed: () -> Unit
+)
 
 enum class Route {
     SEARCH, RESULTS, DETAILS, FEATURES
