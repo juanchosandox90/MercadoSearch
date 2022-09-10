@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
@@ -48,7 +47,9 @@ fun RectangleSearchTextField(
         lockContent = true,
         shape = RectangleShape,
         searchTextValue = searchTextValue,
-        leadingIcon = {},
+        leadingIcon = {
+
+        },
         doWhenSearchedTextChanged = doWhenSearchedTextChanged,
         doWhenSearchActionClicked = doWhenSearchButtonClicked,
         doWhenFocused = doWhenFocused,
@@ -60,6 +61,8 @@ fun RectangleSearchTextField(
 fun RoundedSearchTextField(
     padding: PaddingValues = PaddingValues(),
     searchTextValue: TextFieldValue,
+    doWhenSearchedTextChanged: (TextFieldValue) -> Unit,
+    doWhenSearchActionClicked: () -> Unit
 ) {
     SearchTextField(
         modifier = Modifier
@@ -74,8 +77,8 @@ fun RoundedSearchTextField(
                 contentDescription = "Search Icon"
             )
         },
-        doWhenSearchedTextChanged = { },
-        doWhenSearchActionClicked = { }
+        doWhenSearchedTextChanged = doWhenSearchedTextChanged,
+        doWhenSearchActionClicked = doWhenSearchActionClicked
     )
 }
 
