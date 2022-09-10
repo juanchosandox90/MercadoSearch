@@ -23,7 +23,12 @@ android {
     }
 
     buildTypes {
+        debug {
+            debuggable true
+            buildConfigField("String", "API_HOST", "\"https://api.mercadolibre.com\"")
+        }
         release {
+            buildConfigField("String", "API_HOST", "\"https://api.mercadolibre.com\"")
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -61,6 +66,7 @@ kotlin.sourceSets.all {
 
 dependencies {
 
+    def retrofit = '2.9.0'
     def accompanist_version = '0.24.7-alpha'
 
     // UI
@@ -85,6 +91,13 @@ dependencies {
     // Dependency Injection
     implementation 'com.google.dagger:hilt-android:2.38.1'
     kapt 'com.google.dagger:hilt-android-compiler:2.38.1'
+
+    // Networking
+    implementation "com.squareup.retrofit2:retrofit:$retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit"
+
+    // Serialization
+    implementation 'com.google.code.gson:gson:2.9.0'
 
     // Instrumented tests
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
