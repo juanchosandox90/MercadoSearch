@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sandoval.mercadosearch.ui.compose.RectangleSearchTextField
+import com.sandoval.mercadosearch.ui.search_products.screens.preview.searchResultActions
 import com.sandoval.mercadosearch.ui.theme.MercadoSearchTheme
 import com.sandoval.mercadosearch.ui.theme.Typography
 
@@ -93,10 +94,6 @@ data class SearchResultsActions(
 fun SearchResultsScreenNoResultsStatePreview() {
     BuildSearchResultsPreview()
 }
-
-//TODO: Estos estados de previsualizacion podria migrarlos a un archivo independiente
-val searchResultActions = SearchResultsActions(
-    doWhenBackButtonClicked = {})
 
 @Composable
 fun BuildSearchResultsPreview() {
