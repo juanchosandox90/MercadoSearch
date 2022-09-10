@@ -25,7 +25,9 @@ import com.sandoval.mercadosearch.ui.theme.*
 
 @Composable
 fun SearchProductScreen(
-    searchTextValue: TextFieldValue
+    searchTextValue: TextFieldValue,
+    doWhenSearchedTextChanged: (TextFieldValue) -> Unit,
+    doWhenSearchActionClicked: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     Box(
@@ -52,7 +54,9 @@ fun SearchProductScreen(
             )
             RoundedSearchTextField(
                 padding = PaddingValues(top = 32.dp),
-                searchTextValue = searchTextValue
+                searchTextValue = searchTextValue,
+                doWhenSearchedTextChanged = doWhenSearchedTextChanged,
+                doWhenSearchActionClicked = doWhenSearchActionClicked
             )
             val isSearchEnabled = searchTextValue.text.isBlank().not()
 
@@ -61,12 +65,13 @@ fun SearchProductScreen(
                     .padding(top = 32.dp)
                     .shadow(elevation = 8.dp, shape = CircleShape)
                     .background(
-                        color = if (isSearchEnabled) MercadoSearchBlue else MercadoSearchBrightGray,
+                        color = if (isSearchEnabled) MercadoSearchBrightGray else MercadoSearchDarkGray,
                         shape = CircleShape
                     ),
                 enabled = isSearchEnabled,
                 onClick = {
                     focusManager.clearFocus(force = true)
+                    doWhenSearchActionClicked()
                 }
             ) {
                 Icon(
@@ -109,7 +114,9 @@ fun SearchProductScreenPreviewPortrait() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            SearchProductScreen(searchTextValue = TextFieldValue())
+            SearchProductScreen(searchTextValue = TextFieldValue(),
+                doWhenSearchedTextChanged = {},
+                doWhenSearchActionClicked = {})
         }
     }
 }

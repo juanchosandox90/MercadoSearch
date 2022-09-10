@@ -47,7 +47,9 @@ fun RectangleSearchTextField(
         lockContent = true,
         shape = RectangleShape,
         searchTextValue = searchTextValue,
-        leadingIcon = {},
+        leadingIcon = {
+
+        },
         doWhenSearchedTextChanged = doWhenSearchedTextChanged,
         doWhenSearchActionClicked = doWhenSearchButtonClicked,
         doWhenFocused = doWhenFocused,
@@ -59,6 +61,8 @@ fun RectangleSearchTextField(
 fun RoundedSearchTextField(
     padding: PaddingValues = PaddingValues(),
     searchTextValue: TextFieldValue,
+    doWhenSearchedTextChanged: (TextFieldValue) -> Unit,
+    doWhenSearchActionClicked: () -> Unit
 ) {
     SearchTextField(
         modifier = Modifier
@@ -73,8 +77,8 @@ fun RoundedSearchTextField(
                 contentDescription = "Search Icon"
             )
         },
-        doWhenSearchedTextChanged = { },
-        doWhenSearchActionClicked = { }
+        doWhenSearchedTextChanged = doWhenSearchedTextChanged,
+        doWhenSearchActionClicked = doWhenSearchActionClicked
     )
 }
 
