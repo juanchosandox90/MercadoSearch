@@ -3,9 +3,9 @@ package com.sandoval.mercadosearch.data.json
 import com.google.gson.JsonElement
 import com.sandoval.mercadosearch.data.extensions.errorBodyAsJsonObject
 import com.sandoval.mercadosearch.data.extensions.getOrNull
-import com.sandoval.mercadosearch.data.networking.ErrorEntity
-import com.sandoval.mercadosearch.data.networking.Mapper
-import com.sandoval.mercadosearch.data.networking.Result
+import com.sandoval.mercadosearch.domain.base.ErrorEntity
+import com.sandoval.mercadosearch.domain.base.Mapper
+import com.sandoval.mercadosearch.domain.base.Result
 import retrofit2.Response
 
 abstract class JsonResponseMapper<I : JsonElement, T> : Mapper<Response<I>, Result<T>> {

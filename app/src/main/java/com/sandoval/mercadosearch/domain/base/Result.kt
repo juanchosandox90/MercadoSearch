@@ -1,4 +1,4 @@
-package com.sandoval.mercadosearch.data.networking
+package com.sandoval.mercadosearch.domain.base
 
 sealed class Result<out T> {
     class Success<T>(val data: T) : Result<T>()
