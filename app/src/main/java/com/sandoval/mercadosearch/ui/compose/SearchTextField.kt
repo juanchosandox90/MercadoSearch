@@ -35,6 +35,7 @@ fun RectangleSearchTextField(
     enabled: Boolean,
     doWhenSearchedTextChanged: (TextFieldValue) -> Unit,
     doWhenSearchButtonClicked: () -> Unit,
+    doWhenBackButtonClicked: () -> Unit,
     doWhenFocused: (() -> Unit)? = null,
     doWhenFocusLost: (() -> Unit)? = null
 ) {
@@ -48,7 +49,12 @@ fun RectangleSearchTextField(
         shape = RectangleShape,
         searchTextValue = searchTextValue,
         leadingIcon = {
-
+            BackButton(
+                doWhenBackButtonClicked = {
+                    keyboardController?.hide()
+                    doWhenBackButtonClicked()
+                }, enabled = enabled
+            )
         },
         doWhenSearchedTextChanged = doWhenSearchedTextChanged,
         doWhenSearchActionClicked = doWhenSearchButtonClicked,

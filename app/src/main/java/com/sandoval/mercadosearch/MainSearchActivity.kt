@@ -9,6 +9,7 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.sandoval.mercadosearch.ui.search_products.router.MercadoSearchNavigation
+import com.sandoval.mercadosearch.ui.search_products.router.MercadoSearchNavigationActions
 import com.sandoval.mercadosearch.ui.theme.MercadoSearchTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,9 +24,13 @@ class MainSearchActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MercadoSearchNavigation()
+                    MercadoSearchNavigation(mercadoSearchNavigationActions = setupActions())
                 }
             }
         }
     }
+
+    private fun setupActions(): MercadoSearchNavigationActions = MercadoSearchNavigationActions(
+        doWhenBackButtonPressed = { onBackPressed() }
+    )
 }
