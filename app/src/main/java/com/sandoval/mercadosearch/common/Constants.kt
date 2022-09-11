@@ -6,3 +6,5 @@ const val QUERY_PARAM_KEY = "q"
 const val OFFSET_PARAM_KEY = "offset"
 const val LIMIT_PARAM_KEY = "limit"
 const val DEFAULT_SIDE_ID = "MLA"
+const val DEFAULT_UPDATE_DELAY = 800L
+const val PAGINATION_SEARCH_DELAY = 300L

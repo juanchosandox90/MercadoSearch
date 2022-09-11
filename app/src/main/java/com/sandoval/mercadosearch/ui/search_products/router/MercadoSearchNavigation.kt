@@ -48,6 +48,7 @@ fun MercadoSearchNavigation(
                 doWhenSearchedTextChanged = { text -> searchTextValue = text },
                 doWhenSearchActionClicked = {
                     navigationController.navigate(Route.RESULTS.name)
+                    mercadoSearchNavigationActions.doWhenSearchActionClicked(searchTextValue.text)
                 }
             )
         }
@@ -90,6 +91,7 @@ private fun SetStatusBarColor(systemUiController: SystemUiController, color: Col
 }
 
 data class MercadoSearchNavigationActions(
+    val doWhenSearchActionClicked: (String) -> Unit,
     val doWhenBackButtonPressed: () -> Unit
 )
 
