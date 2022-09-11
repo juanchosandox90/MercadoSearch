@@ -32,7 +32,7 @@ import com.sandoval.mercadosearch.ui.search_products.screens.preview.*
 import com.sandoval.mercadosearch.ui.theme.MercadoSearchGreenHaze
 import com.sandoval.mercadosearch.ui.theme.MercadoSearchTheme
 import com.sandoval.mercadosearch.ui.theme.Typography
-import com.sandoval.mercadosearch.ui.viewmodel.models.ProductDataUIModel
+import com.sandoval.mercadosearch.ui.viewmodel.models.products.ProductDataUIModel
 import com.sandoval.mercadosearch.ui.viewmodel.state.ProductSearchState
 
 @Composable

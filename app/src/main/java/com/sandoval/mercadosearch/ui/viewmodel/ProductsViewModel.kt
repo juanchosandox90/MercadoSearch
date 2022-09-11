@@ -14,7 +14,7 @@ import com.sandoval.mercadosearch.ui.base.ErrorDProductModelToUIModel
 import com.sandoval.mercadosearch.ui.pagination.PagingUISource
 import com.sandoval.mercadosearch.ui.viewmodel.mapper.DProductDataModelToUIModel
 import com.sandoval.mercadosearch.ui.viewmodel.mapper.DProductDetailDataModelToUIModel
-import com.sandoval.mercadosearch.ui.viewmodel.models.ProductDataUIModel
+import com.sandoval.mercadosearch.ui.viewmodel.models.products.ProductDataUIModel
 import com.sandoval.mercadosearch.ui.viewmodel.state.ProductDetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

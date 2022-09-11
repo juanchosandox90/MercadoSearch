@@ -1,7 +1,7 @@
 package com.sandoval.mercadosearch.ui.viewmodel.state
 
 import com.sandoval.mercadosearch.ui.base.ErrorUIModel
-import com.sandoval.mercadosearch.ui.viewmodel.models.ProductDataUIModel
+import com.sandoval.mercadosearch.ui.viewmodel.models.products.ProductDataUIModel
 import com.sandoval.mercadosearch.ui.viewmodel.models.details_product.ProductDetailDataUIModel
 
 sealed class ProductDetailState (val product: ProductDataUIModel) {

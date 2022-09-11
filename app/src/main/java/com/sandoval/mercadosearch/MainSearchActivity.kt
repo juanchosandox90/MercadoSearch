@@ -34,6 +34,7 @@ class MainSearchActivity : ComponentActivity() {
                 ) {
                     MercadoSearchNavigation(
                         searchState = viewModel.searchState.observeAsState(),
+                        detailsState = viewModel.detailsState.observeAsState(),
                         mercadoSearchNavigationActions = setupActions()
                     )
                 }

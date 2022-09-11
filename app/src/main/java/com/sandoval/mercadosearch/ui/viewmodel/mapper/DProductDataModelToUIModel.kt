@@ -4,7 +4,7 @@ import android.content.Context
 import com.sandoval.mercadosearch.domain.base.Mapper
 import com.sandoval.mercadosearch.domain.models.products.DProductDataModel
 import com.sandoval.mercadosearch.ui.utils.formatAsCurrency
-import com.sandoval.mercadosearch.ui.viewmodel.models.ProductDataUIModel
+import com.sandoval.mercadosearch.ui.viewmodel.models.products.ProductDataUIModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
