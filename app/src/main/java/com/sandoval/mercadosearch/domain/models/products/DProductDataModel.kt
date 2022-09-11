@@ -1,4 +1,4 @@
-package com.sandoval.mercadosearch.domain.models
+package com.sandoval.mercadosearch.domain.models.products
 
 data class DProductDataModel(
     val id: String,

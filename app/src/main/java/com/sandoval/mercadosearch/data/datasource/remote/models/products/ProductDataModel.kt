@@ -1,6 +1,6 @@
-package com.sandoval.mercadosearch.data.datasource.remote.models
+package com.sandoval.mercadosearch.data.datasource.remote.models.products
 
-import com.sandoval.mercadosearch.domain.models.DProductDataModel
+import com.sandoval.mercadosearch.domain.models.products.DProductDataModel
 
 class ProductDataModel(
     val id: String,

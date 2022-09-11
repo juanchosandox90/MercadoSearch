@@ -3,14 +3,14 @@ package com.sandoval.mercadosearch.data.datasource.remote.mapper
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import com.sandoval.mercadosearch.domain.base.PaginatedDProductDataModel
-import com.sandoval.mercadosearch.data.datasource.remote.models.ProductDataModel
+import com.sandoval.mercadosearch.data.datasource.remote.models.products.ProductDataModel
 import com.sandoval.mercadosearch.data.extensions.getAsJsonObjectOrNull
 import com.sandoval.mercadosearch.data.extensions.getOrNull
 import com.sandoval.mercadosearch.data.json.JsonResponseMapper
 import com.sandoval.mercadosearch.domain.base.ErrorEntity
 import com.sandoval.mercadosearch.domain.base.Result
 import com.sandoval.mercadosearch.data.pagination.PaginationUtils
-import com.sandoval.mercadosearch.domain.models.DProductDataModel
+import com.sandoval.mercadosearch.domain.models.products.DProductDataModel
 
 object JsonToPaginatedProductsData :
     JsonResponseMapper<JsonObject, PaginatedDProductDataModel<DProductDataModel>>() {

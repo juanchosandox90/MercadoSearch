@@ -6,12 +6,14 @@ import com.sandoval.mercadosearch.common.OFFSET_PARAM_KEY
 import com.sandoval.mercadosearch.common.QUERY_PARAM_KEY
 import com.sandoval.mercadosearch.data.datasource.remote.api.ProductsApiService
 import com.sandoval.mercadosearch.data.datasource.remote.mapper.JsonToPaginatedProductsData
+import com.sandoval.mercadosearch.data.datasource.remote.mapper.JsonToProductDetails
 import com.sandoval.mercadosearch.domain.base.PaginatedDProductDataModel
 import com.sandoval.mercadosearch.data.networking.NetworkConnectionChecker
 import com.sandoval.mercadosearch.domain.base.Result
 import com.sandoval.mercadosearch.data.networking.networkRequest
-import com.sandoval.mercadosearch.domain.models.DProductDataModel
+import com.sandoval.mercadosearch.domain.models.products.DProductDataModel
 import com.sandoval.mercadosearch.domain.models.SearchProductsParams
+import com.sandoval.mercadosearch.domain.models.details_product.DProductDetailsDataModel
 import javax.inject.Inject
 
 class DefaultProductsRemoteDataSource @Inject constructor(
@@ -32,4 +34,11 @@ class DefaultProductsRemoteDataSource @Inject constructor(
                 )
             )
         }
+
+    override suspend fun getDetails(id: String): Result<DProductDetailsDataModel> =
+        networkRequest(networkConnectionChecker) {
+            JsonToProductDetails.map(productsApiService.getDetails(id))
+        }
+
+
 }
