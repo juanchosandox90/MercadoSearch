@@ -9,12 +9,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.sandoval.mercadosearch.ui.compose.BackButton
 import com.sandoval.mercadosearch.ui.compose.ErrorSnackbarHost
 import com.sandoval.mercadosearch.ui.search_products.screens.preview.productDetailActions
@@ -30,8 +32,15 @@ fun ProductDetailScreen(
         topBar = {
             TopAppBar(
                 title = {},
-                actions = { TopBarDetailScreenSection(actions) },
-                navigationIcon = { BackButton(actions.doWhenBackButtonClicked) }
+                //TODO Aqui se debe pasar es un parametro del modelo que comparte la descripcion del producto
+                // TODO Por ahora pasamos un string quemado para probar la funcionalidad mientras pintamos la informacion
+                actions = { TopBarDetailScreenSection("share", actions) },
+                navigationIcon = {
+                    BackButton(actions.doWhenBackButtonClicked)
+                },
+                backgroundColor = MaterialTheme.colors.primary,
+                contentColor = Color.Black,
+                elevation = 10.dp
             )
         },
         snackbarHost = { snackbarHostState -> ErrorSnackbarHost(snackbarHostState = snackbarHostState) }
@@ -53,21 +62,22 @@ fun ProductDetailScreen(
 }
 
 @Composable
-private fun TopBarDetailScreenSection(actions: ProductDetailsActions) {
+private fun TopBarDetailScreenSection(product: String, actions: ProductDetailsActions) {
     IconButton(
         onClick = {
-
+            actions.doWhenSharedButtonClicked(product)
         }
     ) {
         Icon(
             imageVector = Icons.Default.Share,
             contentDescription = "Compartir",
-            tint = Color.White
+            tint = Color.Black
         )
     }
 }
 
 data class ProductDetailsActions(
+    val doWhenSharedButtonClicked: (String) -> Unit,
     val doWhenBackButtonClicked: () -> Unit
 )
 

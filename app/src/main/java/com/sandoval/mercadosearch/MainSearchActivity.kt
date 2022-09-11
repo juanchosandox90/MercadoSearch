@@ -13,6 +13,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.sandoval.mercadosearch.ui.search_products.router.MercadoSearchNavigation
 import com.sandoval.mercadosearch.ui.search_products.router.MercadoSearchNavigationActions
 import com.sandoval.mercadosearch.ui.theme.MercadoSearchTheme
+import com.sandoval.mercadosearch.ui.utils.shareText
 import com.sandoval.mercadosearch.ui.viewmodel.ProductsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,6 +43,9 @@ class MainSearchActivity : ComponentActivity() {
     private fun setupActions(): MercadoSearchNavigationActions = MercadoSearchNavigationActions(
         doWhenSearchActionClicked = { text -> viewModel.initialSearch(text) },
         doWhenShowProductDetails = {},
+        doWhenSharedButtonClicked = { description ->
+            shareText(title = "Mercado Search App shared product", description)
+        },
         doWhenBackButtonPressed = { onBackPressed() }
     )
 }
