@@ -19,13 +19,15 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.sandoval.mercadosearch.ui.theme.MercadoSearchYellow
 import com.sandoval.mercadosearch.ui.compose.textFieldSaver
 import com.sandoval.mercadosearch.ui.search_products.screens.*
-import com.sandoval.mercadosearch.ui.viewmodel.models.ProductDataUIModel
+import com.sandoval.mercadosearch.ui.viewmodel.models.products.ProductDataUIModel
+import com.sandoval.mercadosearch.ui.viewmodel.state.ProductDetailState
 import com.sandoval.mercadosearch.ui.viewmodel.state.ProductSearchState
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MercadoSearchNavigation(
     searchState: State<ProductSearchState?>,
+    detailsState: State<ProductDetailState?>,
     mercadoSearchNavigationActions: MercadoSearchNavigationActions
 ) {
 
@@ -80,6 +82,7 @@ fun MercadoSearchNavigation(
         composable(Route.DETAILS.name) {
             SetStatusBarColor(systemUiController = systemUiController, color = MercadoSearchYellow)
             ProductDetailScreen(
+                state = detailsState.value,
                 actions = productDetailsActions(
                     mercadoSearchNavigationActions
                 )

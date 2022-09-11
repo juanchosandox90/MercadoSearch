@@ -1,9 +1,14 @@
 package com.sandoval.mercadosearch.ui.search_products.screens.preview
 
+import androidx.compose.ui.graphics.Color
 import com.sandoval.mercadosearch.ui.base.ErrorUIModel
 import com.sandoval.mercadosearch.ui.search_products.screens.ProductDetailsActions
 import com.sandoval.mercadosearch.ui.search_products.screens.SearchResultsActions
-import com.sandoval.mercadosearch.ui.viewmodel.models.ProductDataUIModel
+import com.sandoval.mercadosearch.ui.viewmodel.models.details_product.ProductAttributeUIModel
+import com.sandoval.mercadosearch.ui.viewmodel.models.details_product.ProductDetailDataUIModel
+import com.sandoval.mercadosearch.ui.viewmodel.models.details_product.ProductPictureUIModel
+import com.sandoval.mercadosearch.ui.viewmodel.models.products.ProductDataUIModel
+import com.sandoval.mercadosearch.ui.viewmodel.state.ProductDetailState
 import com.sandoval.mercadosearch.ui.viewmodel.state.ProductSearchState
 
 /*
@@ -51,6 +56,26 @@ val product3 = ProductDataUIModel(
 
 val productList = listOf(product, product2, product3)
 
+val attributes = listOf(
+    ProductAttributeUIModel(name = "Color", value = "Black"),
+    ProductAttributeUIModel(name = "Brand", value = "Generic"),
+    ProductAttributeUIModel(name = "Weight", value = "23 kg"),
+    ProductAttributeUIModel(name = "Height", value = "1 meter"),
+    ProductAttributeUIModel(name = "Width", value = "3 meter")
+)
+
+val productDetails = ProductDetailDataUIModel(
+    warranty = "",
+    pictures = listOf(
+        ProductPictureUIModel("1", ""),
+        ProductPictureUIModel("1", "")
+    ),
+    attributes = attributes,
+    availableQuantity = "3",
+    availableQuantityColor = Color.Gray,
+    soldQuantity = "4 sold"
+)
+
 /*
 Estados de UI para la pantalla de Resultados de Busqueda
  */
@@ -83,3 +108,7 @@ Estados de UI para la pantalla de Busqueda Inicial
 
 val productDetailActions =
     ProductDetailsActions(doWhenSharedButtonClicked = {}, doWhenBackButtonClicked = {})
+
+val productDetailsLoading = ProductDetailState.Loading(product)
+val productDetailsReady = ProductDetailState.DetailsReady(product, productDetails)
+val productFailureReady = ProductDetailState.Failure(product, error)

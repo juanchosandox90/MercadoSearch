@@ -1,4 +1,4 @@
-package com.sandoval.mercadosearch.ui.viewmodel.models
+package com.sandoval.mercadosearch.ui.viewmodel.models.products
 
 data class ProductDataUIModel(
     val id: String,
