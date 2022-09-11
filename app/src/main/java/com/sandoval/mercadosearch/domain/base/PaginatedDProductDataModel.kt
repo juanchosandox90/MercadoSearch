@@ -1,6 +1,6 @@
 package com.sandoval.mercadosearch.domain.base
 
-data class PaginatedDataEntity<T>(
+data class PaginatedDProductDataModel<T>(
     val total: Int,
     val pages: Int,
     val items: List<T>
