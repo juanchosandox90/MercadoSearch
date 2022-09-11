@@ -50,6 +50,7 @@ val productList = listOf(product, product2, product3)
 
 val searchResultActions = SearchResultsActions(
     doWhenSearchActionClicked = {},
+    doWhenSearchedTextChanged = {},
     doWhenBackButtonClicked = {})
 
 val searchResultsLoading = ProductSearchState.Loading

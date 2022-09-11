@@ -51,7 +51,7 @@ fun SearchResultScreen(
             RectangleSearchTextField(
                 searchTextValue,
                 enabled = searchState != ProductSearchState.Loading,
-                doWhenSearchedTextChanged = {},
+                doWhenSearchedTextChanged = actions.doWhenSearchedTextChanged,
                 doWhenSearchButtonClicked = actions.doWhenSearchActionClicked,
                 doWhenBackButtonClicked = actions.doWhenBackButtonClicked,
                 doWhenFocused = { searchFocusState = true },
@@ -168,7 +168,11 @@ private fun ProductsListSection(
                     when {
                         product.freeShipping -> {
                             Text(
-                                modifier = Modifier.padding(start = 8.dp, top = 4.dp, bottom = 16.dp),
+                                modifier = Modifier.padding(
+                                    start = 8.dp,
+                                    top = 4.dp,
+                                    bottom = 16.dp
+                                ),
                                 text = "Free Shipping",
                                 style = Typography.caption,
                                 color = MercadoSearchGreenHaze
@@ -227,6 +231,7 @@ private fun FailureSection(message: String) {
 
 data class SearchResultsActions(
     val doWhenSearchActionClicked: () -> Unit,
+    val doWhenSearchedTextChanged: (TextFieldValue) -> Unit,
     val doWhenBackButtonClicked: () -> Unit
 )
 
