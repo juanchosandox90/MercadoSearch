@@ -3,6 +3,7 @@ package com.sandoval.mercadosearch.ui.viewmodel.mapper
 import android.content.Context
 import com.sandoval.mercadosearch.domain.base.Mapper
 import com.sandoval.mercadosearch.domain.models.DProductDataModel
+import com.sandoval.mercadosearch.ui.utils.formatAsCurrency
 import com.sandoval.mercadosearch.ui.viewmodel.models.ProductDataUIModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -14,7 +15,7 @@ class DProductDataModelToUIModel @Inject constructor(@ApplicationContext private
             ProductDataUIModel(
                 id = product.id,
                 name = product.title,
-                price = product.price.toString(),
+                price = product.price.formatAsCurrency(),
                 picture = product.thumbnail,
                 freeShipping = product.freeShipping,
                 condition = when (product.condition) {

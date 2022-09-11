@@ -69,6 +69,9 @@ fun MercadoSearchNavigation(
                 searchState = searchState.value,
                 actions = searchResultActions(
                     searchTextValue,
+                    doWhenSearchedTextChanged = { text ->
+                        searchTextValue = text
+                    },
                     mercadoSearchNavigationActions,
                     navigationController
                 )
@@ -80,9 +83,11 @@ fun MercadoSearchNavigation(
 @Composable
 private fun searchResultActions(
     searchTextValue: TextFieldValue,
+    doWhenSearchedTextChanged: (TextFieldValue) -> Unit,
     mercadoSearchNavigation: MercadoSearchNavigationActions,
     navigationController: NavHostController
 ) = SearchResultsActions(
+    doWhenSearchedTextChanged = doWhenSearchedTextChanged,
     doWhenSearchActionClicked = {
         mercadoSearchNavigation.doWhenSearchActionClicked(
             searchTextValue.text
