@@ -1,11 +1,14 @@
 package com.sandoval.mercadosearch.ui.search_products.screens.preview
 
 import com.sandoval.mercadosearch.ui.base.ErrorUIModel
+import com.sandoval.mercadosearch.ui.search_products.screens.ProductDetailsActions
 import com.sandoval.mercadosearch.ui.search_products.screens.SearchResultsActions
-import com.sandoval.mercadosearch.ui.viewmodel.mapper.DProductDataModelToUIModel
 import com.sandoval.mercadosearch.ui.viewmodel.models.ProductDataUIModel
 import com.sandoval.mercadosearch.ui.viewmodel.state.ProductSearchState
 
+/*
+Mock de modelos para simular los estados en los previews
+ */
 
 val error =
     ErrorUIModel(generalPurposeMessage = "Something went wrong", suggestedAction = "Retry")
@@ -48,9 +51,14 @@ val product3 = ProductDataUIModel(
 
 val productList = listOf(product, product2, product3)
 
+/*
+Estados de UI para la pantalla de Resultados de Busqueda
+ */
+
 val searchResultActions = SearchResultsActions(
     doWhenSearchActionClicked = {},
     doWhenSearchedTextChanged = {},
+    doOnSelectedProduct = {},
     doWhenBackButtonClicked = {})
 
 val searchResultsLoading = ProductSearchState.Loading
@@ -68,3 +76,9 @@ val searchResultsFailure = ProductSearchState.Failure(
         suggestedAction = "Retry"
     )
 )
+
+/*
+Estados de UI para la pantalla de Busqueda Inicial
+ */
+
+val productDetailActions = ProductDetailsActions(doWhenBackButtonClicked = {})

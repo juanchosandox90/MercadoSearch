@@ -71,7 +71,8 @@ fun SearchResultScreen(
                 ProductSearchState.NoResults -> NoResultsFoundSection()
                 is ProductSearchState.Results -> {
                     ProductsListSection(
-                        searchState.products
+                        searchState.products,
+                        actions.doOnSelectedProduct
                     )
                     searchState.refreshingError?.let { error ->
                         ShowErrorSnackBar(
@@ -128,7 +129,8 @@ private fun LoadingSection() {
 
 @Composable
 private fun ProductsListSection(
-    products: List<ProductDataUIModel>
+    products: List<ProductDataUIModel>,
+    doOnSelectedProduct: (ProductDataUIModel) -> Unit
 ) {
     val lazyListState = rememberLazyListState()
     LazyColumn(
@@ -138,7 +140,7 @@ private fun ProductsListSection(
             items = products,
             key = { product -> product.id }) { product ->
             Row(
-                modifier = Modifier.clickable { },
+                modifier = Modifier.clickable { doOnSelectedProduct(product) },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AsyncImage(
@@ -232,7 +234,8 @@ private fun FailureSection(message: String) {
 data class SearchResultsActions(
     val doWhenSearchActionClicked: () -> Unit,
     val doWhenSearchedTextChanged: (TextFieldValue) -> Unit,
-    val doWhenBackButtonClicked: () -> Unit
+    val doWhenBackButtonClicked: () -> Unit,
+    val doOnSelectedProduct: (ProductDataUIModel) -> Unit
 )
 
 @Preview(name = "LoadingStateState")

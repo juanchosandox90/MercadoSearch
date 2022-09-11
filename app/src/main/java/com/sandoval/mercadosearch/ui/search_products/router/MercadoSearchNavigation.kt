@@ -18,9 +18,8 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.sandoval.mercadosearch.ui.theme.MercadoSearchYellow
 import com.sandoval.mercadosearch.ui.compose.textFieldSaver
-import com.sandoval.mercadosearch.ui.search_products.screens.SearchProductScreen
-import com.sandoval.mercadosearch.ui.search_products.screens.SearchResultScreen
-import com.sandoval.mercadosearch.ui.search_products.screens.SearchResultsActions
+import com.sandoval.mercadosearch.ui.search_products.screens.*
+import com.sandoval.mercadosearch.ui.viewmodel.models.ProductDataUIModel
 import com.sandoval.mercadosearch.ui.viewmodel.state.ProductSearchState
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -77,6 +76,15 @@ fun MercadoSearchNavigation(
                 )
             )
         }
+
+        composable(Route.DETAILS.name) {
+            SetStatusBarColor(systemUiController = systemUiController, color = MercadoSearchYellow)
+            ProductDetailScreen(
+                actions = productDetailsActions(
+                    mercadoSearchNavigationActions
+                )
+            )
+        }
     }
 }
 
@@ -93,8 +101,23 @@ private fun searchResultActions(
             searchTextValue.text
         )
     },
+    doOnSelectedProduct = { product ->
+        mercadoSearchNavigation.doWhenShowProductDetails(product)
+        navigationController.navigate(Route.DETAILS.name)
+    },
     doWhenBackButtonClicked = mercadoSearchNavigation.doWhenBackButtonPressed
 )
+
+@Composable
+private fun productDetailsActions(
+    mercadoSearchNavigation: MercadoSearchNavigationActions
+) =
+    ProductDetailsActions(
+        doWhenBackButtonClicked = {
+            mercadoSearchNavigation.doWhenBackButtonPressed()
+        }
+    )
+
 
 @Composable
 private fun SetStatusBarColor(systemUiController: SystemUiController, color: Color) {
@@ -105,6 +128,7 @@ private fun SetStatusBarColor(systemUiController: SystemUiController, color: Col
 
 data class MercadoSearchNavigationActions(
     val doWhenSearchActionClicked: (String) -> Unit,
+    val doWhenShowProductDetails: (ProductDataUIModel) -> Unit,
     val doWhenBackButtonPressed: () -> Unit
 )
 
