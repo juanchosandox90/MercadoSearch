@@ -41,6 +41,7 @@ class MainSearchActivity : ComponentActivity() {
 
     private fun setupActions(): MercadoSearchNavigationActions = MercadoSearchNavigationActions(
         doWhenSearchActionClicked = { text -> viewModel.initialSearch(text) },
+        doWhenShowProductDetails = {},
         doWhenBackButtonPressed = { onBackPressed() }
     )
 }
