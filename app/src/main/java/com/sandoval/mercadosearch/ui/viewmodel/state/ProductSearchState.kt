@@ -1,6 +1,5 @@
 package com.sandoval.mercadosearch.ui.viewmodel.state
 
-import com.sandoval.mercadosearch.domain.models.DProductDataModel
 import com.sandoval.mercadosearch.ui.base.ErrorUIModel
 import com.sandoval.mercadosearch.ui.viewmodel.models.ProductDataUIModel
 

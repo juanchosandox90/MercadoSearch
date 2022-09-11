@@ -9,10 +9,13 @@ import com.sandoval.mercadosearch.domain.usecase.SearchProductsByNameUseCase
 import com.sandoval.mercadosearch.ui.viewmodel.base.BaseViewModel
 import com.sandoval.mercadosearch.ui.viewmodel.state.ProductSearchState
 import com.sandoval.mercadosearch.domain.base.Result
+import com.sandoval.mercadosearch.domain.usecase.GetProductDetailsUseCase
 import com.sandoval.mercadosearch.ui.base.ErrorDProductModelToUIModel
 import com.sandoval.mercadosearch.ui.pagination.PagingUISource
 import com.sandoval.mercadosearch.ui.viewmodel.mapper.DProductDataModelToUIModel
+import com.sandoval.mercadosearch.ui.viewmodel.mapper.DProductDetailDataModelToUIModel
 import com.sandoval.mercadosearch.ui.viewmodel.models.ProductDataUIModel
+import com.sandoval.mercadosearch.ui.viewmodel.state.ProductDetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -41,6 +44,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
     private val searchProductsByNameUseCase: SearchProductsByNameUseCase,
+    private val getProductDetailsUseCase: GetProductDetailsUseCase,
+    private val productDetailsMapper: DProductDetailDataModelToUIModel,
     private val productModelMapper: DProductDataModelToUIModel,
     private val errorMapper: ErrorDProductModelToUIModel,
     private val delayStatus: DelayStatus = DelayStatus()
@@ -48,6 +53,9 @@ class ProductsViewModel @Inject constructor(
 
     private var _searchState = MutableLiveData<ProductSearchState>()
     val searchState: LiveData<ProductSearchState> = _searchState
+
+    private var _detailsState = MutableLiveData<ProductDetailState>()
+    val detailsState: LiveData<ProductDetailState> = _detailsState
 
     private val pagingSource by lazy { PagingUISource<ProductDataUIModel>(limit = 20) }
 
@@ -65,7 +73,10 @@ class ProductsViewModel @Inject constructor(
                 )) {
                     is Result.Success -> {
                         if (result.data.isNotEmpty()) {
-                            pagingSource.init(pages = result.data.pages, total = result.data.total)
+                            pagingSource.init(
+                                pages = result.data.pages,
+                                total = result.data.total
+                            )
                             pagingSource.append(productModelMapper.map(result.data.items))
                             runDelayed {
                                 _searchState.postValue(
@@ -87,6 +98,30 @@ class ProductsViewModel @Inject constructor(
             })
         } else {
             _searchState.value = ProductSearchState.EmptySearchedText
+        }
+    }
+
+    fun getProductDetails(product: ProductDataUIModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _detailsState.postValue(ProductDetailState.Loading(product))
+            when (val result = getProductDetailsUseCase.perform(product.id)) {
+                is Result.Success -> runDelayed {
+                    _detailsState.postValue(
+                        ProductDetailState.DetailsReady(
+                            product = product,
+                            details = productDetailsMapper.map(result.data)
+                        )
+                    )
+                }
+                is Result.Failure -> runDelayed {
+                    _detailsState.postValue(
+                        ProductDetailState.Failure(
+                            product = product,
+                            error = errorMapper.map(result.error)
+                        )
+                    )
+                }
+            }
         }
     }
 

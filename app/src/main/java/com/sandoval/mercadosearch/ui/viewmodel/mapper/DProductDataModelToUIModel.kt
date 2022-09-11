@@ -2,7 +2,7 @@ package com.sandoval.mercadosearch.ui.viewmodel.mapper
 
 import android.content.Context
 import com.sandoval.mercadosearch.domain.base.Mapper
-import com.sandoval.mercadosearch.domain.models.DProductDataModel
+import com.sandoval.mercadosearch.domain.models.products.DProductDataModel
 import com.sandoval.mercadosearch.ui.utils.formatAsCurrency
 import com.sandoval.mercadosearch.ui.viewmodel.models.ProductDataUIModel
 import dagger.hilt.android.qualifiers.ApplicationContext

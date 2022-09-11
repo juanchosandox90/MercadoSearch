@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Mercado Search</string>
+
+    <string name="title_not_specified">No especificado</string>
+    <string name="title_warranty_not_specified">Informacion de la garantia no especificado</string>
+
+    <plurals name="soldQuantity">
+        <item quantity="zero">No hay vendidos aun</item>
+        <item quantity="other">%d Vendidos</item>
+    </plurals>
+
+    <plurals name="availableQuantity">
+        <item quantity="zero">No hay inventario</item>
+        <item quantity="other">%d disponibles</item>
+    </plurals>
+
 </resources>
