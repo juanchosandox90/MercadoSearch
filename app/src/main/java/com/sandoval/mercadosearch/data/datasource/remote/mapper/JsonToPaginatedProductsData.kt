@@ -2,7 +2,7 @@ package com.sandoval.mercadosearch.data.datasource.remote.mapper
 
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
-import com.sandoval.mercadosearch.domain.base.PaginatedDataEntity
+import com.sandoval.mercadosearch.domain.base.PaginatedDProductDataModel
 import com.sandoval.mercadosearch.data.datasource.remote.models.ProductDataModel
 import com.sandoval.mercadosearch.data.extensions.getAsJsonObjectOrNull
 import com.sandoval.mercadosearch.data.extensions.getOrNull
@@ -13,12 +13,12 @@ import com.sandoval.mercadosearch.data.pagination.PaginationUtils
 import com.sandoval.mercadosearch.domain.models.DProductDataModel
 
 object JsonToPaginatedProductsData :
-    JsonResponseMapper<JsonObject, PaginatedDataEntity<DProductDataModel>>() {
+    JsonResponseMapper<JsonObject, PaginatedDProductDataModel<DProductDataModel>>() {
 
     override fun map(
         responseCode: Int,
         json: JsonObject
-    ): Result<PaginatedDataEntity<DProductDataModel>> {
+    ): Result<PaginatedDProductDataModel<DProductDataModel>> {
         val paging = json.getAsJsonObjectOrNull(PAGING_OBJECT_KEY)
         val total = paging?.getOrNull(TOTAL_OBJECT_KEY)?.asInt?.run {
 
@@ -32,7 +32,7 @@ object JsonToPaginatedProductsData :
         return if (total != null && limit != null) {
             val pages = PaginationUtils.calculatePages(total, limit)
             Result.Success(
-                PaginatedDataEntity(
+                PaginatedDProductDataModel(
                     total = total,
                     pages = pages,
                     items = mapJsonArray(json.getAsJsonArray(RESULTS_OBJECT_KEY))

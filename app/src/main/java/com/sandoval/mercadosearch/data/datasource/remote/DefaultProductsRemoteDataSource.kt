@@ -6,7 +6,7 @@ import com.sandoval.mercadosearch.common.OFFSET_PARAM_KEY
 import com.sandoval.mercadosearch.common.QUERY_PARAM_KEY
 import com.sandoval.mercadosearch.data.datasource.remote.api.ProductsApiService
 import com.sandoval.mercadosearch.data.datasource.remote.mapper.JsonToPaginatedProductsData
-import com.sandoval.mercadosearch.domain.base.PaginatedDataEntity
+import com.sandoval.mercadosearch.domain.base.PaginatedDProductDataModel
 import com.sandoval.mercadosearch.data.networking.NetworkConnectionChecker
 import com.sandoval.mercadosearch.domain.base.Result
 import com.sandoval.mercadosearch.data.networking.networkRequest
@@ -19,7 +19,7 @@ class DefaultProductsRemoteDataSource @Inject constructor(
     private val networkConnectionChecker: NetworkConnectionChecker
 ) : RemoteProductsDataSource {
 
-    override suspend fun searchByName(params: SearchProductsParams): Result<PaginatedDataEntity<DProductDataModel>> =
+    override suspend fun searchByName(params: SearchProductsParams): Result<PaginatedDProductDataModel<DProductDataModel>> =
         networkRequest(networkConnectionChecker) {
             JsonToPaginatedProductsData.map(
                 productsApiService.searchByName(
