@@ -1,5 +1,6 @@
 package com.sandoval.mercadosearch.ui.search_products.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -14,15 +15,21 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.sandoval.mercadosearch.R
 import com.sandoval.mercadosearch.ui.compose.ErrorSnackbarHost
 import com.sandoval.mercadosearch.ui.compose.RectangleSearchTextField
 import com.sandoval.mercadosearch.ui.compose.ShowErrorSnackBar
 import com.sandoval.mercadosearch.ui.search_products.screens.preview.*
+import com.sandoval.mercadosearch.ui.theme.MercadoSearchGreenHaze
 import com.sandoval.mercadosearch.ui.theme.MercadoSearchTheme
 import com.sandoval.mercadosearch.ui.theme.Typography
 import com.sandoval.mercadosearch.ui.viewmodel.models.ProductDataUIModel
@@ -43,7 +50,7 @@ fun SearchResultScreen(
         topBar = {
             RectangleSearchTextField(
                 searchTextValue,
-                enabled = true,
+                enabled = searchState != ProductSearchState.Loading,
                 doWhenSearchedTextChanged = {},
                 doWhenSearchButtonClicked = actions.doWhenSearchActionClicked,
                 doWhenBackButtonClicked = actions.doWhenBackButtonClicked,
@@ -92,16 +99,18 @@ fun SearchResultScreen(
                 }
                 else -> {}
             }
-            if (searchFocusState) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.White)
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null
-                        ) {}
-                )
+            when {
+                searchFocusState -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.White)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) {}
+                    )
+                }
             }
         }
     }
@@ -132,6 +141,18 @@ private fun ProductsListSection(
                 modifier = Modifier.clickable { },
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(product.picture)
+                        .crossfade(true)
+                        .placeholder(R.drawable.ic_no_picture_256)
+                        .error(R.drawable.ic_no_picture_256)
+                        .build(),
+                    contentDescription = "Imagen del producto",
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .size(60.dp)
+                )
                 Column {
                     Text(
                         modifier = Modifier.padding(start = 8.dp, top = 16.dp, end = 16.dp),
@@ -139,6 +160,25 @@ private fun ProductsListSection(
                         overflow = TextOverflow.Ellipsis,
                         text = product.name
                     )
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp, top = 8.dp),
+                        text = product.price,
+                        style = Typography.h6
+                    )
+                    when {
+                        product.freeShipping -> {
+                            Text(
+                                modifier = Modifier.padding(start = 8.dp, top = 4.dp, bottom = 16.dp),
+                                text = "Free Shipping",
+                                style = Typography.caption,
+                                color = MercadoSearchGreenHaze
+                            )
+                        }
+                        else -> {
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
+                    }
+                    Divider()
                 }
             }
         }
@@ -172,8 +212,11 @@ private fun FailureSection(message: String) {
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        //TODO Colocar una imagen de error
         Spacer(modifier = Modifier.fillMaxHeight(0.10f))
+        Image(
+            painter = painterResource(id = R.drawable.ic_error_exclamation_256),
+            contentDescription = "Advertencia"
+        )
         Text(
             modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp),
             text = message,
