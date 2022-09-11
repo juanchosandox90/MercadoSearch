@@ -81,4 +81,5 @@ val searchResultsFailure = ProductSearchState.Failure(
 Estados de UI para la pantalla de Busqueda Inicial
  */
 
-val productDetailActions = ProductDetailsActions(doWhenBackButtonClicked = {})
+val productDetailActions =
+    ProductDetailsActions(doWhenSharedButtonClicked = {}, doWhenBackButtonClicked = {})

@@ -113,6 +113,9 @@ private fun productDetailsActions(
     mercadoSearchNavigation: MercadoSearchNavigationActions
 ) =
     ProductDetailsActions(
+        doWhenSharedButtonClicked = { description ->
+            mercadoSearchNavigation.doWhenSharedButtonClicked(description)
+        },
         doWhenBackButtonClicked = {
             mercadoSearchNavigation.doWhenBackButtonPressed()
         }
@@ -129,6 +132,7 @@ private fun SetStatusBarColor(systemUiController: SystemUiController, color: Col
 data class MercadoSearchNavigationActions(
     val doWhenSearchActionClicked: (String) -> Unit,
     val doWhenShowProductDetails: (ProductDataUIModel) -> Unit,
+    val doWhenSharedButtonClicked: (String) -> Unit,
     val doWhenBackButtonPressed: () -> Unit
 )
 

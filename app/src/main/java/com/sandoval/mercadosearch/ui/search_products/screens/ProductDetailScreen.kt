@@ -17,8 +17,10 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import com.sandoval.mercadosearch.ui.compose.BackButton
 import com.sandoval.mercadosearch.ui.compose.ErrorSnackbarHost
+import com.sandoval.mercadosearch.ui.search_products.screens.preview.product
 import com.sandoval.mercadosearch.ui.search_products.screens.preview.productDetailActions
 import com.sandoval.mercadosearch.ui.theme.MercadoSearchTheme
+import com.sandoval.mercadosearch.ui.viewmodel.models.ProductDataUIModel
 
 @Composable
 fun ProductDetailScreen(
@@ -30,7 +32,9 @@ fun ProductDetailScreen(
         topBar = {
             TopAppBar(
                 title = {},
-                actions = { TopBarDetailScreenSection(actions) },
+                //TODO Aqui se debe pasar es un parametro del modelo que comparte la descripcion del producto
+                // TODO Por ahora pasamos un string quemado para probar la funcionalidad mientras pintamos la informacion
+                actions = { TopBarDetailScreenSection("share", actions) },
                 navigationIcon = { BackButton(actions.doWhenBackButtonClicked) }
             )
         },
@@ -53,10 +57,10 @@ fun ProductDetailScreen(
 }
 
 @Composable
-private fun TopBarDetailScreenSection(actions: ProductDetailsActions) {
+private fun TopBarDetailScreenSection(product: String, actions: ProductDetailsActions) {
     IconButton(
         onClick = {
-
+            actions.doWhenSharedButtonClicked(product)
         }
     ) {
         Icon(
@@ -68,6 +72,7 @@ private fun TopBarDetailScreenSection(actions: ProductDetailsActions) {
 }
 
 data class ProductDetailsActions(
+    val doWhenSharedButtonClicked: (String) -> Unit,
     val doWhenBackButtonClicked: () -> Unit
 )
 
