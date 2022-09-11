@@ -21,10 +21,12 @@ import com.sandoval.mercadosearch.ui.compose.textFieldSaver
 import com.sandoval.mercadosearch.ui.search_products.screens.SearchProductScreen
 import com.sandoval.mercadosearch.ui.search_products.screens.SearchResultScreen
 import com.sandoval.mercadosearch.ui.search_products.screens.SearchResultsActions
+import com.sandoval.mercadosearch.ui.viewmodel.state.ProductSearchState
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MercadoSearchNavigation(
+    searchState: State<ProductSearchState?>,
     mercadoSearchNavigationActions: MercadoSearchNavigationActions
 ) {
 
@@ -64,6 +66,7 @@ fun MercadoSearchNavigation(
             SetStatusBarColor(systemUiController = systemUiController, color = Color.White)
             SearchResultScreen(
                 searchTextValue = searchTextValue,
+                searchState = searchState.value,
                 actions = searchResultActions(
                     searchTextValue,
                     mercadoSearchNavigationActions,
@@ -80,6 +83,11 @@ private fun searchResultActions(
     mercadoSearchNavigation: MercadoSearchNavigationActions,
     navigationController: NavHostController
 ) = SearchResultsActions(
+    doWhenSearchActionClicked = {
+        mercadoSearchNavigation.doWhenSearchActionClicked(
+            searchTextValue.text
+        )
+    },
     doWhenBackButtonClicked = mercadoSearchNavigation.doWhenBackButtonPressed
 )
 
