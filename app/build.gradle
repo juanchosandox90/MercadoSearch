@@ -69,6 +69,10 @@ dependencies {
     def retrofit = '2.9.0'
     def accompanist_version = '0.24.7-alpha'
 
+    // Lifecycle
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    implementation 'androidx.compose.runtime:runtime-livedata:1.3.0-beta02'
+
     // UI
     implementation "androidx.compose.runtime:runtime:$compose_version"
     implementation 'androidx.activity:activity-compose:1.5.1'
