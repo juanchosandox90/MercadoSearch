@@ -3,6 +3,7 @@
 
     <string name="title_not_specified">No especificado</string>
     <string name="title_warranty_not_specified">Informacion de la garantia no especificado</string>
+    <string name="title_next">Next</string>
 
     <plurals name="soldQuantity">
         <item quantity="zero">No hay vendidos aun</item>

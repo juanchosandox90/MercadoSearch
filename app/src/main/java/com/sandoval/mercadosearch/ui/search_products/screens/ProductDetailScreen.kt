@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,10 +37,7 @@ import com.sandoval.mercadosearch.ui.search_products.screens.preview.productDeta
 import com.sandoval.mercadosearch.ui.search_products.screens.preview.productDetailsLoading
 import com.sandoval.mercadosearch.ui.search_products.screens.preview.productDetailsReady
 import com.sandoval.mercadosearch.ui.search_products.screens.preview.productFailureReady
-import com.sandoval.mercadosearch.ui.theme.MercadoSearchBrightGray
-import com.sandoval.mercadosearch.ui.theme.MercadoSearchGreenHaze
-import com.sandoval.mercadosearch.ui.theme.MercadoSearchTheme
-import com.sandoval.mercadosearch.ui.theme.Typography
+import com.sandoval.mercadosearch.ui.theme.*
 import com.sandoval.mercadosearch.ui.viewmodel.models.products.ProductDataUIModel
 import com.sandoval.mercadosearch.ui.viewmodel.state.ProductDetailState
 
@@ -91,6 +89,7 @@ fun ProductDetailScreen(
                         maxHeight = this@BoxWithConstraints.maxHeight
                     )
                     ProductInfoAndQuantitiesSection(state)
+                    ViewFeaturesSection(state, actions.doWhenShowFeaturesClicked)
                 }
             }
         }
@@ -298,8 +297,44 @@ fun ProductInfoAndQuantitiesSection(state: ProductDetailState) {
     }
 }
 
+@Composable
+fun ViewFeaturesSection(state: ProductDetailState, doWhenShowFeaturesClicked: () -> Unit) {
+    if (state !is ProductDetailState.DetailsReady || state.details.attributes.isNotEmpty()) {
+        val showShimmer = state !is ProductDetailState.DetailsReady
+        OutlinedButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 16.dp)
+                .placeholder(
+                    visible = showShimmer,
+                    highlight = PlaceholderHighlight.shimmer(),
+                ),
+            shape = RoundedCornerShape(4.dp),
+            onClick = {
+                if (state is ProductDetailState.DetailsReady) {
+                    doWhenShowFeaturesClicked()
+                }
+            }) {
+            Text(
+                modifier = Modifier
+                    .padding(vertical = 4.dp)
+                    .weight(1f),
+                text = "Ver todos los detalles",
+                textAlign = TextAlign.Start,
+                color = MercadoSearchDarkGray
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.ic_navigate_next_24),
+                stringResource(id = R.string.title_next),
+                tint = Color.DarkGray
+            )
+        }
+    }
+}
+
 data class ProductDetailsActions(
     val doWhenSharedButtonClicked: (String) -> Unit,
+    val doWhenShowFeaturesClicked: () -> Unit,
     val doWhenBackButtonClicked: () -> Unit
 )
 
