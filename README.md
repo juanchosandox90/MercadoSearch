@@ -13,4 +13,23 @@ long application lifecycle management.
 This app allows you to find and see information about products exposed on the marketplace of Mercado Libre. You can see information about prices, shipping, condition 
 and also you can take a look at the product on the official store.
 
+## Specifications &#9989;
+
+**Current version:** 1.0.0
+
+**Minimum OS version:** Android 8 - Oreo (API level 27)
+
+**Maximum OS version:** Android 13.1 (API level 33)
+
+**Percentage of support devices (based on OS version):** ~83%
+
+**Support for landscape:** Yes
+
+**Dark mode:** No
+
+**Offline support:** No
+
+**Permissions required:** `ACCESS_NETWORK_STATE`, `INTERNET`
+
+## Architecture &#128736;
 
