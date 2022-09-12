@@ -127,7 +127,7 @@ Please feel free to post questions, recommendations, ideas, bugs by create [new 
 ## License
 
 ```license
-Copyright 2021 Juan Camilo Sandoval
+Copyright 2022 Juan Camilo Sandoval
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
