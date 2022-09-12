@@ -109,5 +109,35 @@ If you are experiencing having troubles when trying to see Previews of composabl
 
 Sometimes, unit tests that depends on the test coroutines returns failed results when they're in fact successful (false positives), if this happens, please re-run the test again and try to rebuild the project.
 
+## Contributions
 
-### That's it! Thanks for checking the repo
+All contributions are welcome!
+Please feel free to post questions, recommendations, ideas, bugs by create [new issue](https://github.com/juanchosandox90/BestToDoApp/issues) following the template or if you want create directly [new pull request](https://github.com/juanchosandox90/BestToDoApp/pulls).
+
+## Authors
+
+<a href="https://www.facebook.com/costa27/" target="_blank">
+  <img src="https://avatars.githubusercontent.com/u/19155273?s=400&u=a68489b42c03f3e4b9507a055841365f12a1ff12&v=4" width="70" align="left">
+</a>
+
+**Juan Camilo Sandoval Devia**
+
+[![Linkedin](https://img.shields.io/badge/-linkedin-grey?logo=linkedin)](https://www.linkedin.com/in/juan-camilo-sandoval-devia-a33955a5/)
+
+## License
+
+```license
+Copyright 2021 Juan Camilo Sandoval
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
