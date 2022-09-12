@@ -84,9 +84,18 @@ fun MercadoSearchNavigation(
             ProductDetailScreen(
                 state = detailsState.value,
                 actions = productDetailsActions(
+                    navigationController,
                     mercadoSearchNavigationActions
                 )
             )
+        }
+
+        composable(Route.FEATURES.name) {
+            SetStatusBarColor(systemUiController = systemUiController, MercadoSearchYellow)
+            ProductFeaturesScreen(state = detailsState.value,
+                doWhenBackButtonClicked = {
+                    mercadoSearchNavigationActions.doWhenBackButtonPressed()
+                })
         }
     }
 }
@@ -113,11 +122,15 @@ private fun searchResultActions(
 
 @Composable
 private fun productDetailsActions(
+    navigationController: NavHostController,
     mercadoSearchNavigation: MercadoSearchNavigationActions
 ) =
     ProductDetailsActions(
         doWhenSharedButtonClicked = { description ->
             mercadoSearchNavigation.doWhenSharedButtonClicked(description)
+        },
+        doWhenShowFeaturesClicked = {
+            navigationController.navigate(Route.FEATURES.name)
         },
         doWhenBackButtonClicked = {
             mercadoSearchNavigation.doWhenBackButtonPressed()

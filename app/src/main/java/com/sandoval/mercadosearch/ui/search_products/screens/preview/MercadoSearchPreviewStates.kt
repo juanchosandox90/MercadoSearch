@@ -107,7 +107,10 @@ Estados de UI para la pantalla de Busqueda Inicial
  */
 
 val productDetailActions =
-    ProductDetailsActions(doWhenSharedButtonClicked = {}, doWhenBackButtonClicked = {})
+    ProductDetailsActions(
+        doWhenSharedButtonClicked = {},
+        doWhenBackButtonClicked = {},
+        doWhenShowFeaturesClicked = {})
 
 val productDetailsLoading = ProductDetailState.Loading(product)
 val productDetailsReady = ProductDetailState.DetailsReady(product, productDetails)
