@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.IntOffset
+import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.systemuicontroller.SystemUiController
@@ -17,12 +18,18 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.sandoval.mercadosearch.ui.theme.MercadoSearchYellow
 import com.sandoval.mercadosearch.ui.compose.textFieldSaver
-import com.sandoval.mercadosearch.ui.search_products.screens.SearchProductScreen
-import com.sandoval.mercadosearch.ui.search_products.screens.SearchResultScreen
+import com.sandoval.mercadosearch.ui.search_products.screens.*
+import com.sandoval.mercadosearch.ui.viewmodel.models.products.ProductDataUIModel
+import com.sandoval.mercadosearch.ui.viewmodel.state.ProductDetailState
+import com.sandoval.mercadosearch.ui.viewmodel.state.ProductSearchState
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MercadoSearchNavigation() {
+fun MercadoSearchNavigation(
+    searchState: State<ProductSearchState?>,
+    detailsState: State<ProductDetailState?>,
+    mercadoSearchNavigationActions: MercadoSearchNavigationActions
+) {
 
     val navigationController = rememberAnimatedNavController()
     val systemUiController = rememberSystemUiController()
@@ -44,6 +51,7 @@ fun MercadoSearchNavigation() {
                 doWhenSearchedTextChanged = { text -> searchTextValue = text },
                 doWhenSearchActionClicked = {
                     navigationController.navigate(Route.RESULTS.name)
+                    mercadoSearchNavigationActions.doWhenSearchActionClicked(searchTextValue.text)
                 }
             )
         }
@@ -53,14 +61,87 @@ fun MercadoSearchNavigation() {
                 slideInVertically(initialOffsetY = { 1000 }, animationSpec = springSpec)
             },
             popExitTransition = {
-                slideOutVertically(targetOffsetY = {2000}, animationSpec = springSpec)
+                slideOutVertically(targetOffsetY = { 2000 }, animationSpec = springSpec)
             }
-        ){
+        ) {
             SetStatusBarColor(systemUiController = systemUiController, color = Color.White)
-            SearchResultScreen()
+            SearchResultScreen(
+                searchTextValue = searchTextValue,
+                searchState = searchState.value,
+                actions = searchResultActions(
+                    searchTextValue,
+                    doWhenSearchedTextChanged = { text ->
+                        searchTextValue = text
+                    },
+                    mercadoSearchNavigationActions,
+                    navigationController
+                )
+            )
+        }
+
+        composable(Route.DETAILS.name) {
+            SetStatusBarColor(systemUiController = systemUiController, color = MercadoSearchYellow)
+            ProductDetailScreen(
+                state = detailsState.value,
+                actions = productDetailsActions(
+                    navigationController,
+                    mercadoSearchNavigationActions
+                )
+            )
+        }
+
+        composable(Route.FEATURES.name) {
+            SetStatusBarColor(systemUiController = systemUiController, MercadoSearchYellow)
+            ProductFeaturesScreen(state = detailsState.value,
+                doWhenBackButtonClicked = {
+                    mercadoSearchNavigationActions.doWhenBackButtonPressed()
+                })
         }
     }
 }
+
+@Composable
+private fun searchResultActions(
+    searchTextValue: TextFieldValue,
+    doWhenSearchedTextChanged: (TextFieldValue) -> Unit,
+    mercadoSearchNavigation: MercadoSearchNavigationActions,
+    navigationController: NavHostController
+) = SearchResultsActions(
+    doWhenSearchedTextChanged = doWhenSearchedTextChanged,
+    doWhenLoadingMoreItems = {
+        mercadoSearchNavigation.doWhenMoreResultsRequested(
+            searchTextValue.text
+        )
+    },
+    doWhenSearchActionClicked = {
+        mercadoSearchNavigation.doWhenSearchActionClicked(
+            searchTextValue.text
+        )
+    },
+    doOnSelectedProduct = { product ->
+        mercadoSearchNavigation.doWhenShowProductDetails(product)
+        navigationController.navigate(Route.DETAILS.name)
+    },
+    doWhenBackButtonClicked = mercadoSearchNavigation.doWhenBackButtonPressed
+)
+
+@Composable
+private fun productDetailsActions(
+    navigationController: NavHostController,
+    mercadoSearchNavigation: MercadoSearchNavigationActions
+) =
+    ProductDetailsActions(
+        doWhenSharedButtonClicked = { description ->
+            mercadoSearchNavigation.doWhenSharedButtonClicked(description)
+        },
+        doWhenShowFeaturesClicked = {
+            navigationController.navigate(Route.FEATURES.name)
+        },
+        doWhenBackButtonClicked = {
+            mercadoSearchNavigation.doWhenBackButtonPressed()
+        }
+    )
+
 
 @Composable
 private fun SetStatusBarColor(systemUiController: SystemUiController, color: Color) {
@@ -68,6 +149,14 @@ private fun SetStatusBarColor(systemUiController: SystemUiController, color: Col
         systemUiController.setStatusBarColor(color)
     }
 }
+
+data class MercadoSearchNavigationActions(
+    val doWhenSearchActionClicked: (String) -> Unit,
+    val doWhenMoreResultsRequested: (String) -> Unit,
+    val doWhenShowProductDetails: (ProductDataUIModel) -> Unit,
+    val doWhenSharedButtonClicked: (String) -> Unit,
+    val doWhenBackButtonPressed: () -> Unit
+)
 
 enum class Route {
     SEARCH, RESULTS, DETAILS, FEATURES

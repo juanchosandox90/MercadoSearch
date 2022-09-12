@@ -44,13 +44,14 @@ fun SearchProductScreen(
         ) {
             Text(
                 textAlign = TextAlign.Center,
-                text = "Bienvenido a Mercado Search!",
-                style = Typography.h5
+                text = "Bienvenido a Mercado Search",
+                style = Typography.h4
             )
             Text(
                 modifier = Modifier.padding(top = 8.dp),
                 textAlign = TextAlign.Center,
-                text = "Compra todo lo que necesites al mejor precio"
+                text = "Compra todo lo que necesites al mejor precio",
+                style = Typography.h6
             )
             RoundedSearchTextField(
                 padding = PaddingValues(top = 32.dp),
