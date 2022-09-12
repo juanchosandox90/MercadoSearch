@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
@@ -34,6 +35,8 @@ import com.sandoval.mercadosearch.ui.theme.MercadoSearchTheme
 import com.sandoval.mercadosearch.ui.theme.Typography
 import com.sandoval.mercadosearch.ui.viewmodel.models.products.ProductDataUIModel
 import com.sandoval.mercadosearch.ui.viewmodel.state.ProductSearchState
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 
 @Composable
 fun SearchResultScreen(
@@ -72,6 +75,8 @@ fun SearchResultScreen(
                 is ProductSearchState.Results -> {
                     ProductsListSection(
                         searchState.products,
+                        searchState.isRefreshing,
+                        actions.doWhenLoadingMoreItems,
                         actions.doOnSelectedProduct
                     )
                     searchState.refreshingError?.let { error ->
@@ -80,7 +85,7 @@ fun SearchResultScreen(
                             scaffoldState.snackbarHostState,
                             error
                         ) {
-                            //TODO intentar cargar mas items
+                            actions.doWhenLoadingMoreItems()
                         }
                     }
                 }
@@ -130,6 +135,8 @@ private fun LoadingSection() {
 @Composable
 private fun ProductsListSection(
     products: List<ProductDataUIModel>,
+    isRefreshing: Boolean,
+    doWhenLoadingMoreItems: () -> Unit,
     doOnSelectedProduct: (ProductDataUIModel) -> Unit
 ) {
     val lazyListState = rememberLazyListState()
@@ -188,6 +195,72 @@ private fun ProductsListSection(
                 }
             }
         }
+        if (isRefreshing) {
+            item {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 24.dp),
+                    contentAlignment = Alignment.Center,
+                )
+                {
+                    CircularProgressIndicator(modifier = Modifier.size(30.dp))
+                }
+            }
+        }
+    }
+    DetermineIfLoadMoreItems(isRefreshing, lazyListState) {
+        doWhenLoadingMoreItems()
+    }
+}
+
+/**
+ *
+ * Determinar si la lista debe solicitar más datos. Funciona comprobando si el primer elemento
+ * del [threshold] es visible, esto se hace usando un [derivedStateOf] para evitar
+ * recomposiciones innecesarias. Tiene en cuenta si la UI ya está esperando más
+ * datos ([isRefreshing]) para evitar generar señales verdaderas en este caso.
+ *
+ *
+ * Un [LaunchedEffect] reside aquí junto con un [snapshotFlow] para detectar y notificar
+ * el resultado de la validación mencionada anteriormente, estos efectos se lanzan durante la primera
+ * composición y disposición cuando esta función deja la composición. El cómputo realizado
+ * a través de estos efectos, básicamente escucha el estado generado por [derivedStateOf] y convierte
+ * como flujo para activar [doWhenLoadingMoreItems] evitando invocarlo varias veces.
+ *
+ * @param isRefreshing Notifica si la UI ya fue refrescada
+ * @param listState Estado de la lista a validar
+ * @param doWhenLoadingMoreItems
+ * @param threshold Numero de items que indica en que punto la UI debe ser llenada de items
+ *
+ * */
+
+@Composable
+fun DetermineIfLoadMoreItems(
+    isRefreshing: Boolean,
+    listState: LazyListState,
+    threshold: Int = 5,
+    doWhenLoadingMoreItems: () -> Unit
+) {
+    val shouldLoadMore = remember {
+        derivedStateOf {
+            val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+            if (lastVisibleItem != null) {
+                isRefreshing.not() && lastVisibleItem >= listState.layoutInfo.totalItemsCount - threshold
+            } else {
+                false
+            }
+        }
+    }
+    LaunchedEffect(true) {
+        snapshotFlow { shouldLoadMore.value }
+            .distinctUntilChanged()
+            .filter { it }
+            .collect {
+                if (isRefreshing.not()) {
+                    doWhenLoadingMoreItems()
+                }
+            }
     }
 
 }
@@ -234,6 +307,7 @@ private fun FailureSection(message: String) {
 data class SearchResultsActions(
     val doWhenSearchActionClicked: () -> Unit,
     val doWhenSearchedTextChanged: (TextFieldValue) -> Unit,
+    val doWhenLoadingMoreItems: () -> Unit,
     val doWhenBackButtonClicked: () -> Unit,
     val doOnSelectedProduct: (ProductDataUIModel) -> Unit
 )

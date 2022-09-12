@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sandoval.mercadosearch.common.DEFAULT_UPDATE_DELAY
+import com.sandoval.mercadosearch.common.PAGINATION_SEARCH_DELAY
 import com.sandoval.mercadosearch.domain.models.SearchProductsParams
 import com.sandoval.mercadosearch.domain.usecase.SearchProductsByNameUseCase
 import com.sandoval.mercadosearch.ui.viewmodel.base.BaseViewModel
@@ -99,6 +100,45 @@ class ProductsViewModel @Inject constructor(
         } else {
             _searchState.value = ProductSearchState.EmptySearchedText
         }
+    }
+
+    fun fetchMoreResults(text: String) {
+        runJobAndCancelPrevious(jobName = "fetchMoreResults",
+            job = viewModelScope.launch(Dispatchers.IO) {
+                if (delayStatus.enabled) {
+                    delay(PAGINATION_SEARCH_DELAY)
+                }
+                if (pagingSource.canFetch()) {
+                    _searchState.postValue(
+                        ProductSearchState.Results(pagingSource.data(), isRefreshing = true)
+                    )
+                    when (val result = searchProductsByNameUseCase.perform(
+                        SearchProductsParams(
+                            name = text,
+                            offset = pagingSource.offset(),
+                            limit = pagingSource.limit()
+                        )
+                    )) {
+                        is Result.Success -> {
+                            if (result.data.isNotEmpty()) {
+                                pagingSource.append(productModelMapper.map(result.data.items))
+                            }
+                            runDelayed {
+                                _searchState.postValue(ProductSearchState.Results(pagingSource.data()))
+                            }
+                        }
+                        is Result.Failure -> runDelayed {
+                            _searchState.postValue(
+                                ProductSearchState.Results(
+                                    pagingSource.data(),
+                                    refreshingError = errorMapper.map(result.error)
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+        )
     }
 
     fun getProductDetails(product: ProductDataUIModel) {

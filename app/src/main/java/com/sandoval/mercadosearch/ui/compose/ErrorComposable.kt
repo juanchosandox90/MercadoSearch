@@ -8,7 +8,6 @@ import com.sandoval.mercadosearch.ui.base.ErrorUIModel
 import com.sandoval.mercadosearch.ui.theme.MercadoSearchAmaranthRed
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.lang.Error
 
 @Composable
 fun ErrorSnackbarHost(snackbarHostState: SnackbarHostState) {
