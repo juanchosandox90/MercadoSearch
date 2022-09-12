@@ -33,3 +33,6 @@ and also you can take a look at the product on the official store.
 
 ## Architecture &#128736;
 
+Following concepts of clean architecture, there 3 packages that represents the data, domain and UI. There's also one package for dependency injection.
+
+<img alt="Screen Shot 2022-09-11 at 8 26 58 PM" src="https://github.com/juanchosandox90/MercadoSearch/blob/development/architecture_mercado_search.png">
