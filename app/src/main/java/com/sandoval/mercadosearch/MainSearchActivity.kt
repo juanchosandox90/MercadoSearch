@@ -44,6 +44,7 @@ class MainSearchActivity : ComponentActivity() {
     private fun setupActions(): MercadoSearchNavigationActions = MercadoSearchNavigationActions(
         doWhenSearchActionClicked = { text -> viewModel.initialSearch(text) },
         doWhenShowProductDetails = { product -> viewModel.getProductDetails(product) },
+        doWhenMoreResultsRequested = { text -> viewModel.fetchMoreResults(text) },
         doWhenSharedButtonClicked = { description ->
             shareText(title = "Mercado Search App shared product", description)
         },

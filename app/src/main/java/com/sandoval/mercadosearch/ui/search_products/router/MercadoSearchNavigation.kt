@@ -108,6 +108,11 @@ private fun searchResultActions(
     navigationController: NavHostController
 ) = SearchResultsActions(
     doWhenSearchedTextChanged = doWhenSearchedTextChanged,
+    doWhenLoadingMoreItems = {
+        mercadoSearchNavigation.doWhenMoreResultsRequested(
+            searchTextValue.text
+        )
+    },
     doWhenSearchActionClicked = {
         mercadoSearchNavigation.doWhenSearchActionClicked(
             searchTextValue.text
@@ -147,6 +152,7 @@ private fun SetStatusBarColor(systemUiController: SystemUiController, color: Col
 
 data class MercadoSearchNavigationActions(
     val doWhenSearchActionClicked: (String) -> Unit,
+    val doWhenMoreResultsRequested: (String) -> Unit,
     val doWhenShowProductDetails: (ProductDataUIModel) -> Unit,
     val doWhenSharedButtonClicked: (String) -> Unit,
     val doWhenBackButtonPressed: () -> Unit

@@ -82,6 +82,7 @@ Estados de UI para la pantalla de Resultados de Busqueda
 
 val searchResultActions = SearchResultsActions(
     doWhenSearchActionClicked = {},
+    doWhenLoadingMoreItems = {},
     doWhenSearchedTextChanged = {},
     doOnSelectedProduct = {},
     doWhenBackButtonClicked = {})

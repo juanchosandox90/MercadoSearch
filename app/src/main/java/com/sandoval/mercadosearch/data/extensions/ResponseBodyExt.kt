@@ -1,6 +1,5 @@
 package com.sandoval.mercadosearch.data.extensions
 
-
 import com.google.gson.JsonObject
 import retrofit2.Response
 
